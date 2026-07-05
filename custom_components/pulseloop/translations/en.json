@@ -1,0 +1,13 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "PulseLoop Sleep",
+        "description": "Copy this webhook URL into the PulseLoop app (Settings → Data sharing → Home Assistant), enable it, then press Submit.\n\n**URL:** `{url}`\n\nThe URL is local-only and its id (`{webhook_id}`) is the shared secret — keep it private."
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "PulseLoop is already configured."
+    }
+  }
+}

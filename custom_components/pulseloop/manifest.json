@@ -1,0 +1,13 @@
+{
+  "domain": "pulseloop",
+  "name": "PulseLoop Sleep",
+  "codeowners": ["@linuxct"],
+  "config_flow": true,
+  "dependencies": ["webhook"],
+  "documentation": "https://github.com/linuxct/pulseloop-ha",
+  "integration_type": "service",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/linuxct/pulseloop-ha/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}
