@@ -58,6 +58,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         runtime.update(data)
         async_dispatcher_send(hass, SIGNAL_UPDATE.format(entry.entry_id), data)
 
+    # A previously-failed setup can leave the webhook registered (it registers before the platform
+    # forward below), which makes the next retry/reload raise "Handler is already defined". Clear any
+    # stale handler first — async_unregister is a safe no-op when nothing is registered.
+    webhook.async_unregister(hass, webhook_id)
     webhook.async_register(
         hass,
         DOMAIN,
@@ -68,7 +72,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         local_only=True,
     )
 
-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    try:
+        await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    except Exception:
+        # Never leave the webhook registered if platform setup fails.
+        webhook.async_unregister(hass, webhook_id)
+        raise
     return True
 
 
